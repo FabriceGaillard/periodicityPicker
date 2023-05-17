@@ -1,0 +1,41 @@
+@each $k, $v in $spacings {
+  @each $l, $w in $rules {
+    .#{$l}-#{$k} {
+      #{$w}: $v;
+    }
+    .#{$l}b-#{$k} {
+      #{$w}-bottom: $v;
+    }
+    .#{$l}t-#{$k} {
+      #{$w}-top: $v;
+    }
+    .#{$l}e-#{$k} {
+      #{$w}-right: $v;
+    }
+    .#{$l}s-#{$k} {
+      #{$w}-left: $v;
+    }
+    .#{$l}x-#{$k} {
+      #{$w}-left: $v;
+      #{$w}-right: $v;
+    }
+    .#{$l}y-#{$k} {
+      #{$w}-top: $v;
+      #{$w}-bottom: $v;
+    }
+  }
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.m-auto {
+  margin: auto;
+}
+.ms-auto {
+  margin-left: auto;
+}
+.me-auto {
+  margin-right: auto;
+}

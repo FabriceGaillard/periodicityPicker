@@ -1,0 +1,17 @@
+@use 'sass:map';
+@import './variables';
+.input {
+  background-color: var(--bg-color-secondary);
+  border-radius: 5px;
+  color: inherit;
+
+  input,
+  button {
+    padding: map.get($spacings, '2') map.get($spacings, '3');
+  }
+}
+
+button.input,
+input.input {
+  padding: map.get($spacings, '2') map.get($spacings, '3');
+}
