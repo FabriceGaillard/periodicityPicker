@@ -16,10 +16,10 @@ defineProps({
 svg {
   display: block;
   &.up {
-    transform: rotate(180deg);
+    transform: rotate(0deg);
   }
   &.down {
-    transform: rotate(0deg);
+    transform: rotate(180deg);
   }
   &.left {
     transform: rotate(90deg);

@@ -1,10 +1,10 @@
 <script setup>
 import DayCheckboxList from '@/components/DayCheckboxList.vue'
-import EndRadioList from '@/components/EndRadioList.vue'
 import ReccurencyChoice from '@/components/ReccurencyChoice.vue'
+import EndRadioList from '@/components/EndRadioList.vue'
 </script>
 <template>
-  <div class="container p-4">
+  <!--   <div class="container p-4">
     <div class="title mb-4">Custom reccurence</div>
     <ReccurencyChoice class="mb-4 pt-2" />
     <div class="mb-4">
@@ -12,14 +12,14 @@ import ReccurencyChoice from '@/components/ReccurencyChoice.vue'
       <DayCheckboxList />
     </div>
     <div class="mb-4">
-      <div class="mb-3">Ends</div>
-      <EndRadioList />
-    </div>
+      <div class="mb-3">Ends</div> -->
+  <EndRadioList />
+  <!--     </div>
     <div class="d-flex">
       <button type="button" class="ms-auto me-2">Cancel</button>
       <button type="submit">Done</button>
     </div>
-  </div>
+  </div> -->
 </template>
 <style lang="scss" scoped>
 @import './assets/scss/variables';

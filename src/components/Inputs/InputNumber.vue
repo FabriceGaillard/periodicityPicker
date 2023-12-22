@@ -1,56 +1,75 @@
 <script setup>
-import { computed, ref } from 'vue'
+import ObjectHelper from '@/helpers/ObjectHelper.js'
+import { computed, ref, useAttrs } from 'vue'
 import Arrow from '../Icons/Arrow.vue'
-import AdaptiveInput from '@/components/Inputs/AdaptiveInput.vue'
+import InputBase from '@/components/Inputs/InputBase.vue'
 const { modelValue, min, max } = defineProps({
   min: Number,
   max: Number,
-  suffix: String,
-  prefix: String,
+  suffix: Object,
+  prefix: Object,
   modelValue: [String, Number],
-  class: [String, Object]
+  disabled: Boolean
 })
 
+defineOptions({ inheritAttrs: false })
 const emit = defineEmits(['update:modelValue'])
 
-const handleValue = function (v) {
+const handleRestrictedValue = function (v) {
   let newValue = v
   if (min !== undefined && v < min) newValue = min
   else if (max !== undefined && v > max) newValue = max
+  handleValue(newValue)
+}
+
+const handleValue = function (newValue) {
   value.value = newValue
   emit('update:modelValue', newValue)
 }
 
+const attrs = useAttrs()
+const adaptive = computed(() => {
+  if (!attrs.adaptive) return false
+
+  return {
+    maxChar: attrs.adaptive.maxChar ?? (max && String(max).length),
+    minChar: attrs.adaptive.minChar ?? (min && String(min).length)
+  }
+})
+
 const value = ref(modelValue)
 
-const input = ref(null)
-const e = computed(() => input.value.input)
-defineExpose({ input: e })
+const adaptiveInput = ref(null)
+defineExpose({ input: computed(() => adaptiveInput.value?.input) })
 </script>
 <template>
-  <div class="d-flex">
-    <div class="input me-2">
-      <span v-if="prefix" class="me-2">{{ prefix }}</span>
-      <AdaptiveInput
-        ref="input"
+  <div class="d-flex" :class="$attrs.class">
+    <label class="input d-flex align-items-center me-2">
+      <span v-if="prefix" class="ms-2">
+        {{ Math.abs(value) > 1 ? prefix.pluriel : prefix.singulier }}
+      </span>
+      <InputBase
+        ref="adaptiveInput"
         type="number"
-        adaptive
-        v-bind="$sttr"
+        v-bind="ObjectHelper.omit($attrs, ['class', 'adaptive'])"
         :value="value"
-        :modelValue="value"
         :min="min"
         :max="max"
-        @change="(e) => handleValue(e.target.valueAsNumber)"
-        @input="emit('update:modelValue', $event.target.valueAsNumber)"
+        :disabled="disabled"
+        :adaptive="adaptive"
+        @input="handleValue($event.target.valueAsNumber)"
+        @change="handleRestrictedValue($event.target.valueAsNumber)"
       />
-      <span v-if="prefix" class="ms-2">{{ suffix }}</span>
-    </div>
-    <div class="d-flex flex-column justify-content-between">
-      <button direction="down" @click="handleValue(value + 1)">
-        <Arrow width="14" height="14" direction="down" />
-      </button>
-      <button direction="up" @click="handleValue(value - 1)">
+      <span v-if="suffix" class="me-2">
+        {{ Math.abs(value) > 1 ? suffix.pluriel : suffix.singulier }}
+      </span>
+    </label>
+    <div class="d-flex flex-column justify-content-between" :class="{ disabled }">
+      <button v-mouse-pressed="() => handleRestrictedValue(value + 1)">
         <Arrow width="14" height="14" direction="up" />
+      </button>
+      <button v-mouse-pressed="() => handleRestrictedValue(value - 1)">
+        <Arrow width="14" height="14" direction="down" />
       </button>
     </div>
   </div>
@@ -66,9 +85,9 @@ input::-webkit-inner-spin-button {
 
 /* Firefox */
 input[type='number'] {
-  max-width: 100%;
   appearance: textfield;
   -moz-appearance: textfield;
+  text-align: right;
 }
 
 button {
@@ -88,5 +107,16 @@ button {
   &:hover {
     background-color: red;
   }
+  &:active {
+    background-color: yellow;
+  }
+}
+
+label {
+  cursor: text;
+}
+
+.disabled {
+  opacity: 0.8;
 }
 </style>

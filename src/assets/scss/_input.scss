@@ -9,9 +9,18 @@
   button {
     padding: map.get($spacings, '2') map.get($spacings, '3');
   }
+
+  &:has(> *[disabled]) {
+    opacity: 0.8;
+    pointer-events: none;
+  }
 }
 
 button.input,
 input.input {
   padding: map.get($spacings, '2') map.get($spacings, '3');
+  &[disabled] {
+    opacity: 0.8;
+    pointer-events: none;
+  }
 }

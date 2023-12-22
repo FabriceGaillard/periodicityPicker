@@ -23,7 +23,8 @@ const items = computed(() => {
     <span class="me-2 no-wrap"> Repeat every </span>
     <InputNumber
       :min="1"
-      :max="3"
+      :max="99"
+      :adaptive="{ minChar: 2, maxChar: 2 }"
       type="number"
       v-model="reccurence"
       name="reccurencyValue"
